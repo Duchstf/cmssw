@@ -27,6 +27,7 @@ namespace l1gt {
   typedef ap_fixed<13, 13, AP_RND_CONV> phi_t;
   typedef ap_fixed<14, 14, AP_RND_CONV, AP_SAT> eta_t;
   typedef ap_fixed<10, 9, AP_RND_CONV, AP_SAT> z0_t;
+  typedef ap_ufixed<10, 1, AP_RND, AP_SAT> b_tag_score_t;
   typedef ap_uint<1> valid_t;
 
   // E/gamma fields
@@ -83,6 +84,7 @@ namespace l1gt {
     valid_t valid;
     ThreeVector v3;
     z0_t z0;
+    b_tag_score_t hwBtagScore;
 
     inline bool operator==(const Jet &other) const { return valid == other.valid && z0 == other.z0 && v3 == other.v3; }
 
@@ -93,6 +95,7 @@ namespace l1gt {
       pack_into_bits(ret, start, valid);
       pack_into_bits(ret, start, v3.pack());
       pack_into_bits(ret, start, z0);
+      pack_into_bits(ret, start, hwBtagScore);
       return ret;
     }
 
@@ -117,6 +120,7 @@ namespace l1gt {
       unpack_from_bits(src, start, v3.phi);
       unpack_from_bits(src, start, v3.eta);
       unpack_from_bits(src, start, z0);
+      unpack_from_bits(src, start, hwBtagScore);
     }
 
     inline static Jet unpack(const std::array<uint64_t, 2> &src) {
